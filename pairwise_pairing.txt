@@ -1,0 +1,5 @@
+apple
+orange
+pineapple
+lime
+42
