@@ -1,5 +1,6 @@
+mod general_error;
 mod templates;
-mod account;
+mod user;
 mod database;
 mod index;
 use actix_web::{
