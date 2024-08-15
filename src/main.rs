@@ -28,8 +28,9 @@ async fn main() -> std::io::Result<()> {
             )
             .service(hello)
             .service(index::index_controller::index)
+            .service(user::user_controller::get_route_config())
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("0.0.0.0", 8080))?
     .run()
     .await
 }
