@@ -1,5 +1,7 @@
-use actix_web::{error, http::header, post, get, web, HttpResponse, Scope};
+use actix_web::{cookie::Cookie, error, get, http::header::{self, ContentType}, post, web, HttpResponse, Scope};
 use serde::{Deserialize, Serialize};
+
+use crate::templates::t::render;
 
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -8,14 +10,23 @@ struct AddUserJson {
 }
 #[post("")]
 async fn add_user(
-    data: web::Json<AddUserJson>
+    data: web::Form<AddUserJson>
 ) -> actix_web::Result<HttpResponse, actix_web::Error> {
     let _ = super::user_service::add_user(&data.email)
         .map_err(|err|{
             log::error!("{err:?}");
             error::ErrorInternalServerError("Unknown error")
         })?;
-    Ok(HttpResponse::Ok().finish())
+
+    let body = render("index.html", tera::Context::new())?;
+    Ok(
+        HttpResponse::Ok()
+            .content_type(
+                ContentType::html()
+            )
+            .cookie(Cookie::new("email_added", "true"))
+            .body(body)
+    )
 }
 
 #[get("/test")]

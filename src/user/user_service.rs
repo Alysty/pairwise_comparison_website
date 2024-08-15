@@ -1,4 +1,3 @@
-
 use error_stack::{Result, ResultExt};
 use rusqlite::params;
 use crate::{

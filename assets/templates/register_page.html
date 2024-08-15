@@ -8,9 +8,10 @@
 		<!-- <link href="css/style.css" rel="stylesheet"> -->
 	</head>
 	<body>
-		<p>In this experiment you will have to choose one of two options</p>
-		<p>choose whichever you prefer of the two options without thinking too much about it</p>
-		<p>to start the experiment please press start</p>
-		<button hx-get="/start" type="button">start</button>
+		<form hx-post="/user">
+			<label for="email">Please type your email to proceed:</label>
+			<input type="email" name="email" id="email" value="">
+			<button type="submit">Submit</button>
+		</form>
 	</body>
 </html>
