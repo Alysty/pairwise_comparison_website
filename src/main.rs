@@ -3,6 +3,8 @@ mod templates;
 mod user;
 mod database;
 mod index;
+mod pair_wise;
+mod get_items;
 use actix_web::{
     get, middleware::Logger, App, HttpResponse, HttpServer, Responder
 };
