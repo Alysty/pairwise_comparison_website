@@ -4,7 +4,7 @@ mod user;
 mod database;
 mod index;
 mod pair_wise;
-mod get_items;
+mod items;
 use actix_web::{
     get, middleware::Logger, App, HttpResponse, HttpServer, Responder
 };
@@ -18,6 +18,7 @@ async fn hello() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    _ = items::add_items_to_db().unwrap();
     env_logger::init_from_env(Env::default().default_filter_or("info"));
 
     HttpServer::new(|| {
@@ -31,6 +32,7 @@ async fn main() -> std::io::Result<()> {
             .service(hello)
             .service(index::index_controller::index)
             .service(user::user_controller::get_route_config())
+            .service(pair_wise::pair_wise_controller::get_route_config())
     })
     .bind(("0.0.0.0", 8080))?
     .run()

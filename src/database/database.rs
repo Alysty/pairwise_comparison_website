@@ -3,7 +3,7 @@ use std::sync::Mutex;
 use lazy_static::lazy_static;
 use rusqlite::Connection;
 
-//should probably change it to a pool of connection using r2d2
+// TODO: should probably change it to a pool of connection using r2d2
 lazy_static! {
     pub static ref CONN: Mutex<Connection> = {
         let conn = Connection::open_in_memory().unwrap();
@@ -25,17 +25,24 @@ lazy_static! {
         .unwrap();
         conn.execute(
             "CREATE TABLE vote(
-                item_id INTEGER,
+                win_item_id INTEGER,
+                lose_item_id INTEGER,
                 user_id INTEGER,
-                PRIMARY KEY (item_id, user_id),
-                FOREIGN KEY (item_id) references item(id),
+                PRIMARY KEY (lose_item_id, win_item_id, user_id),
+                FOREIGN KEY (win_item_id) references item(id),
+                FOREIGN KEY (lose_item_id) references item(id),
                 FOREIGN KEY (user_id) references user(id)
             )",
             (),
         )
         .unwrap();
         conn.execute(
-            "CREATE INDEX idx_vote_item_id ON vote (item_id)",
+            "CREATE INDEX idx_win_item_id ON vote (win_item_id)",
+            (),
+        )
+        .unwrap();
+        conn.execute(
+            "CREATE INDEX idx_lose_item_id ON vote (lose_item_id)",
             (),
         )
         .unwrap();
